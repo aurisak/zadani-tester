@@ -8,8 +8,8 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        fail-fast: false
         settings:
           [
             { baseUrl: "https://dev.fakturaonline.cz", domain: "CZ" },
