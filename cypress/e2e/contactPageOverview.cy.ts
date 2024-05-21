@@ -4,7 +4,7 @@ import * as tables from "../support/pageObjects/tables";
 
 const username = Cypress.env("testUser");
 const password = Cypress.env("testUserPassword");
-const domain = Cypress.env("domain");
+const domain = Cypress.env("domain").trim().toUpperCase();
 
 interface UserContact {
   name: string;
