@@ -16,7 +16,7 @@ Cypress.Commands.add("visitSk", (args) => {
 });
 
 Cypress.Commands.add("login", (username: string, password: string) => {
-  cy.visitCz("/");
+  cy.visit('/')
   cy.get("button").contains("Přihlásit se").click();
   cy.get("#email").type(username);
   cy.get("#current-password").type(password);
