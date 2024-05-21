@@ -15,12 +15,46 @@ Cypress.Commands.add("visitSk", (args) => {
   cy.visit(`https://dev.fakturaonline.sk${args}`);
 });
 
-Cypress.Commands.add("login", (username: string, password: string) => {
-  cy.visitCz("/");
-  cy.get("button").contains("Přihlásit se").click();
-  cy.get("#email").type(username);
-  cy.get("#current-password").type(password);
-  cy.get(".get-login").within(() => {
-    cy.get("button").contains("Přihlásit se").click();
-  });
+const login = (
+  { domain, username, password }: { domain: string; username: string; password: string },
+  cy: Cypress.cy & CyEventEmitter
+) => {
+  switch (domain) {
+    case "CZ": {
+      cy.visit("/");
+      cy.get("button").contains("Přihlásit se").click();
+      cy.get("#email").type(username);
+      cy.get("#current-password").type(password);
+      cy.get(".get-login").within(() => {
+        cy.get("button").contains("Přihlásit se").click();
+      });
+    }
+  }
+};
+
+Cypress.Commands.add("login", ({ username, password, domain }) => {
+  switch (domain) {
+    case "CZ": {
+      cy.visit("/");
+      cy.get("button").contains("Přihlásit se").click();
+      cy.get("#email").type(username);
+      cy.get("#current-password").type(password);
+      cy.get(".get-login").within(() => {
+        cy.get("button").contains("Přihlásit se").click();
+      });
+      break;
+    }
+    case "SK": {
+      cy.visit("/");
+      cy.get("button").contains("Prihlásiť sa").click();
+      cy.get("#email").type(username);
+      cy.get("#current-password").type(password);
+      cy.get(".get-login").within(() => {
+        cy.get("button").contains("Prihlásiť sa").click();
+      });
+      break;
+    }
+    default:
+      throw new Error(`Domain ${domain} is not supported`);
+  }
 });

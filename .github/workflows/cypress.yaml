@@ -1,0 +1,33 @@
+name: Cypress
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          [
+            { baseUrl: "https://dev.fakturaonline.cz", domain: "CZ" },
+            { baseUrl: "https://dev.fakturaonline.sk", domain: "SK" },
+          ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Cypress tests
+        env:
+          CYPRESS_BASE_URL: ${{ matrix.settings.baseUrl }}
+          CYPRESS_testUser: ${{ secrets[format('TEST_USER_{0}', matrix.settings.domain)] }}
+          CYPRESS_testUserPassword: ${{ secrets[format('TEST_USER_PASSWORD_{0}', matrix.settings.domain)] }}
+          CYPRESS_domain: ${{ matrix.settings.domain }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: cypress-io/github-action@v6
+        with:
+          record: true
+          browser: chrome
