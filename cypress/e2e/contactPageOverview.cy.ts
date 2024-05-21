@@ -2,8 +2,8 @@ import * as contactsOverview from "../support/pageObjects/contactsOverview";
 import * as invoiceForm from "../support/pageObjects/invoiceForm";
 import * as tables from "../support/pageObjects/tables";
 
-const username = Cypress.env("testUserCZ").userName_cz;
-const password = Cypress.env("testUserCZ").userPassword_cz;
+const username = Cypress.env('testUser');
+const password = Cypress.env('testUserPassword');
 
 interface UserContact {
   name: string;

@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        baseUrl: ['https://dev.fakturaonline.cz']
+        settings: [{ baseUrl: 'https://dev.fakturaonline.cz', domain: 'CZ'}]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,7 +24,10 @@ jobs:
 
       - name: Run Cypress tests
         env:
-          CYPRESS_BASE_URL: ${{ matrix.baseUrl }}
+          CYPRESS_BASE_URL: ${{ matrix.settings.baseUrl }}
+          CYPRESS_testUser: ${{ secrets[format('TEST_USER_{0}', matrix.settings.domain)] }}
+          CYPRESS_testUserPassword: ${{ secrets[format('TEST_USER_PASSWORD_{0}', matrix.settings.domain)] }}
+          CYPRESS_domain: ${{ matrix.settings.domain }}
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
