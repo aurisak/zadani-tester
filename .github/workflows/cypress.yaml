@@ -20,6 +20,7 @@ jobs:
           CYPRESS_testUser: ${{ secrets[format('TEST_USER_{0}', matrix.settings.domain)] }}
           CYPRESS_testUserPassword: ${{ secrets[format('TEST_USER_PASSWORD_{0}', matrix.settings.domain)] }}
           CYPRESS_domain: ${{ matrix.settings.domain }}
+          CYPRESS_projectId: ${{ secrets.CYPRESS_PROJECT_ID }}
         uses: cypress-io/github-action@v6
         with:
           browser: chrome
