@@ -42,6 +42,7 @@ Cypress.Commands.add("login", ({ username, password, domain }) => {
       cy.get(".get-login").within(() => {
         cy.get("button").contains("Přihlásit se").click();
       });
+      break;
     }
     case "SK": {
       cy.visit("/");
@@ -51,6 +52,7 @@ Cypress.Commands.add("login", ({ username, password, domain }) => {
       cy.get(".get-login").within(() => {
         cy.get("button").contains("Prihlásiť sa").click();
       });
+      break;
     }
     default:
       throw new Error(`Domain ${domain} is not supported`);
