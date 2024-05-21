@@ -2,8 +2,9 @@ import * as contactsOverview from "../support/pageObjects/contactsOverview";
 import * as invoiceForm from "../support/pageObjects/invoiceForm";
 import * as tables from "../support/pageObjects/tables";
 
-const username = Cypress.env('testUser');
-const password = Cypress.env('testUserPassword');
+const username = Cypress.env("testUser");
+const password = Cypress.env("testUserPassword");
+const domain = Cypress.env("domain");
 
 interface UserContact {
   name: string;
@@ -15,7 +16,7 @@ interface UserContact {
 
 describe("Contact page", () => {
   beforeEach(() => {
-    cy.login(username, password);
+    cy.login({ username, password, domain });
   });
 
   after(() => {
@@ -24,13 +25,20 @@ describe("Contact page", () => {
     tables.removeInovice();
   });
 
+  const translations = {
+    CZ: {
+      emptyMessage: "Zatím nemáte žádné kontakty, ale jakmile nějaký vytvoříte, najdete ho na této stránce.",
+    },
+    SK: {
+      emptyMessage: "Zatiaľ nemáte žiadne kontakty, ale akonáhle nejaký vytvoríte, nájdete ho na tejto stránke.",
+    },
+  };
+
   it("should create new contact", () => {
     cy.get(".navbar__content").within(() => {
       cy.get(".navbar-navigation__item").contains("Kontakty").click();
     });
-    cy.get(".empty-message")
-      .contains("Zatím nemáte žádné kontakty, ale jakmile nějaký vytvoříte, najdete ho na této stránce.")
-      .should("be.visible");
+    cy.get(".empty-message").contains(translations[domain].emptyMessage).should("be.visible");
     cy.intercept("POST", "**contacts**").as("createContact");
     cy.intercept("GET", "/api/contacts/**").as("getContacts");
 

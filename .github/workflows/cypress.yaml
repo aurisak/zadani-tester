@@ -3,13 +3,17 @@ name: Cypress
 on:
   push:
   workflow_dispatch:
-    
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        settings: [{ baseUrl: 'https://dev.fakturaonline.cz', domain: 'CZ'}]
+        settings:
+          [
+            { baseUrl: "https://dev.fakturaonline.cz", domain: "CZ" },
+            { baseUrl: "https://dev.fakturaonline.sk", domain: "SK" },
+          ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
